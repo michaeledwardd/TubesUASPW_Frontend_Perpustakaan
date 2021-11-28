@@ -1,6 +1,6 @@
 <template>
   <v-main class="list">
-    <h3 class="text-h3 font-weight-medium mb-5">Daftar Buku</h3>
+    <h3 class="text-h3 font-weight-medium mb-5">Daftar Pengguna</h3>
     
     <v-card>
       <v-card-title>
@@ -17,9 +17,9 @@
         <v-btn color="success" dark @click="dialog = true"> Tambah </v-btn>
 
       </v-card-title>
-      <v-data-table :headers="headers" :items="Bukus" :search="search">
+      <v-data-table :headers="headers" :items="users" :search="search">
 
-          <template v-slot:[`item.actions`]="{item}">
+        <template v-slot:[`item.actions`]="{item}">
                 <v-btn icon small class="mr-2" @click="editHandler(item)">
                   <v-icon color="red">mdi-pencil</v-icon>
                 </v-btn>
@@ -27,26 +27,21 @@
                      <v-icon color="green">mdi-delete</v-icon>
                 </v-btn>
             </template>
-
-        <!-- <template v-slot:[`item.actions`]="{ item }">
-          <v-btn small class="mr-2" @click="editHandler(item)"> edit </v-btn>
-          <v-btn small @click="deleteHandler(item.id)"> delete </v-btn>
-        </template> -->
       </v-data-table>
     </v-card>
     
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
-          <span class="headline">{{formTitle}} buku</span>
+          <span class="headline">{{formTitle}} Pengguna</span>
         </v-card-title>
         <v-card-text>
           <v-container>
-            <v-text-field v-model="form.judulBuku" label="Judul Buku" required></v-text-field>
-            <v-text-field v-model="form.isbn" label="isbn" required></v-text-field>
-            <v-text-field v-model="form.pengarang" label="Pengarang" required></v-text-field>
-            <v-text-field v-model="form.tahunTerbit" label="tahunTerbit" required></v-text-field>
-            
+            <v-text-field v-model="form.name" label="Name" required></v-text-field>
+            <v-text-field v-model="form.email" label="Email" required></v-text-field>
+             <v-text-field v-model="form.nomorIdentitas" label="Nomor Identitas" required></v-text-field>
+              <v-text-field v-model="form.username" label="Username" required></v-text-field>
+            <v-text-field type="password" v-model="form.password" label="Password" required></v-text-field>
           </v-container>
         </v-card-text>
         <v-card-actions>
@@ -63,7 +58,7 @@
         <v-card-title>
           <span class="headline">warning!</span>
         </v-card-title>
-        <v-card-text> Anda yakin ingin menghapus buku ini? </v-card-text>
+        <v-card-text> Anda yakin ingin menghapus pengguna ini? </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="dialogConfirm = false">
@@ -94,19 +89,21 @@ export default {
       dialog: false,
       dialogConfirm: false,
       headers: [
-        { text: "Judul Buku", align: "start", sortable: true, value: "judulBuku"},
-        { text: "isbn", value: 'isbn'},
-        { text: "Pengarang", value: 'pengarang'},
-        { text: "tahunTerbit", value: 'tahunTerbit'},
-        { text: "Action", value:'actions'},
+        { text: "Name", align: "start", sortable: true, value: "name"},
+        { text: "Email", value: 'email'},
+        { text: "Nomor Identitas", value: 'nomorIdentitas'},
+        { text: "Username", value: 'username'},
+        // { text: "Password", value: 'password'},
+        { text: "Action", value: 'actions'}
       ],
-      buku: new FormData,
-      Bukus: [],
+      user: new FormData,
+      users: [],
       form:{
-        judulBuku: null,
-        isbn: null,
-        pengarang: null,
-        tahunTerbit: null,
+        name: null,
+        email: null,
+        nomorIdentitas: null,
+        username: null,
+        password: null,
       },
       deleteId: '',
       editId: ''
@@ -124,25 +121,26 @@ export default {
     },
 
     readData(){
-      var url = this.$api + '/buku';
+      var url = this.$api + '/user';
       this.$http.get(url, {
         headers: {
           'Authorization' : 'Bearer ' + localStorage.getItem('token')
         }
       }).then(response => {
-        this.Bukus = response.data.data;
+        this.users = response.data.data;
       })
     },
 
     save(){
-      this.buku.append('judulBuku',this.form.judulBuku);
-      this.buku.append('isbn',this.form.isbn);
-      this.buku.append('pengarang',this.form.pengarang);
-      this.buku.append('tahunTerbit', this.form.tahunTerbit);
+      this.user.append('name',this.form.name);
+      this.user.append('email',this.form.email);
+      this.user.append('nomorIdentitas',this.form.nomorIdentitas);
+      this.user.append('username',this.form.username);
+      this.user.append('password',this.form.password);
 
-      var url= this.$api + '/buku/'
+      var url= this.$api + '/user/'
       this.load = true;
-      this.$http.post(url, this.buku, {
+      this.$http.post(url, this.user, {
         headers: {
           'Authorization' : 'Bearer ' + localStorage.getItem('token'),
         }
@@ -164,12 +162,11 @@ export default {
 
     update(){
       let newData = {
-        judulBuku : this.form.judulBuku,
-        isbn : this.form.isbn,
-        pengarang : this.form.pengarang,
-        tahunTerbit: this.form.tahunTerbit
+        name : this.form.name,
+        email : this.form.email,
+        password : this.form.password
       };
-      var url = this.$api + '/buku/' + this.editId;
+      var url = this.$api + '/user/' + this.editId;
       this.load = true;
       this.$http.put(url, newData, {
         headers: {
@@ -194,7 +191,7 @@ export default {
 
     deleteData() {
       //mengahapus data
-      var url = this.$api + '/buku/' + this.deleteId;
+      var url = this.$api + '/user/' + this.deleteId;
       //data dihapus berdasarkan id
       this.$http.delete(url, {
           headers: {
@@ -222,10 +219,11 @@ export default {
     editHandler(item){
       this.inputType = 'Ubah';
       this.editId = item.id;
-      this.form.judulBuku = item.judulBuku;
-      this.form.isbn = item.isbn;
-      this.form.pengarang = item.pengarang;
-      this.form.tahunTerbit = item.tahunTerbit;
+      this.form.name = item.name;
+      this.form.email = item.email;
+      this.form.nomorIdentitas = item.nomorIdentitas;
+      this.form.username = item.username;
+      this.form.password = item.password;
       this.dialog = true;
     },
 
@@ -248,10 +246,9 @@ export default {
     },
     resetForm() {
       this.form = {
-        judulBuku: null,
-        isbn: null,
-        pengarang: null,
-        tahunTerbit: null,
+        name: null,
+        email: null,
+        password: null,
       };
     },
   },

@@ -28,6 +28,7 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <VSpacer />
       <v-toolbar-items>
+        <v-btn text router @click = "btnProfile"><v-icon>mdi-account</v-icon></v-btn>
         <v-btn text router @click = "btnLogout"><v-icon>mdi-power</v-icon></v-btn>
       </v-toolbar-items>
     </v-app-bar>
@@ -46,6 +47,7 @@ export default {
       drawer: true,
       items: [
         { title: "Dashboard", to: "/dashboard" },
+        { title: "Daftar Pengguna", to: "/user" },
         { title: "Buku", to:"/buku" },
         { title: "Denda", to:"/denda"},
         { title: "Peminjaman", to:"/peminjaman"},
@@ -54,6 +56,9 @@ export default {
     };
   },
   methods: {
+    btnProfile() {
+      this.$router.push('/profile');
+    },
     btnLogout() {
       localStorage.removeItem('id');
       localStorage.removeItem('token');

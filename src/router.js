@@ -21,14 +21,48 @@ const router = new VueRouter({
                     meta: {title : 'Dashboard'},
                     component: importComponent('Dashboard'),
                 },
-                //courses
+                //buku
                 {
                     path: '/buku',
                     name: 'Buku',
                     meta: {title : 'Bukus'},
                     component: importComponent('DataMaster/Buku'),
                 },
-                
+                //buku
+                {
+                    path: '/denda',
+                    name: 'Denda',
+                    meta: {title : 'Dendas'},
+                    component: importComponent('DataMaster/Denda'),
+                },
+                //buku
+                {
+                    path: '/peminjaman',
+                    name: 'Peminjaman',
+                    meta: {title : 'Peminjamans'},
+                    component: importComponent('DataMaster/Peminjaman'),
+                },
+                //buku
+                {
+                    path: '/pengembalian',
+                    name: 'Pengembalian',
+                    meta: {title : 'Pengembalians'},
+                    component: importComponent('DataMaster/Pengembalian'),
+                },
+                //buku
+                {
+                    path: '/profile',
+                    name: 'Profile',
+                    meta: {title : 'Profiles'},
+                    component: importComponent('DataMaster/Profile'),
+                },
+                //buku
+                {
+                    path: '/user',
+                    name: 'User',
+                    meta: {title : 'Profiles'},
+                    component: importComponent('DataMaster/User'),
+                },
             ],
         },
 

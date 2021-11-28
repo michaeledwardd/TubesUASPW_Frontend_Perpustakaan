@@ -20,6 +20,18 @@
                     required
                   ></v-text-field>  
                   <v-text-field
+                    label="Nomor Identitas"
+                    v-model="nomorIdentitas"
+                    :rules="nomorIdentitasRules"
+                    required
+                  ></v-text-field>  
+                  <v-text-field
+                    label="Username"
+                    v-model="username"
+                    :rules="usernameRules"
+                    required
+                  ></v-text-field>  
+                  <v-text-field
                     label="E-mail"
                     v-model="email"
                     :rules="emailRules"
@@ -89,6 +101,10 @@ export default {
       valid: false,
       name: '',
       nameRules: [(v) => !!v || "Nama tidak boleh kosong :("],
+      nomorIdentitas: '',
+      nomorIdentitasRules: [(v) => !!v || "Nomor identitas tidak boleh kosong :("],
+      username: '',
+      usernameRules: [(v) => !!v || "Username tidak boleh kosong :("],
       password: '',
       passwordRules: [(v) => !!v || "Password tidak boleh kosong :("],
       email: "",
@@ -103,6 +119,8 @@ export default {
         this.$http
           .post(this.$api + '/register', {
             name:this.name,
+            nomorIdentitas:this.nomorIdentitas,
+            username:this.username,
             email: this.email,
             password: this.password,
           })
