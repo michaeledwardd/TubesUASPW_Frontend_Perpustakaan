@@ -25,17 +25,13 @@ export default {
   name: "List",
   data() {
     return {
-      showPassField: false,
-      cekHash: false,
       load: false,
       snackbar: false,
       error_message: "",
       color: "",
-      url: "",
       search: null,
       dialog: false,
       dialogConfirm: false,
-      imagePreview: null,
       showPreview: false,
       formUser: new FormData(),
       user: {
