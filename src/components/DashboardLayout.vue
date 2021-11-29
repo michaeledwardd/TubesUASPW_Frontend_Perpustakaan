@@ -46,7 +46,7 @@ export default {
     return {
       drawer: true,
       items: [
-        { title: "Dashboard", to: "/dashboard" },
+        { title: "Dashboard", to: "/dashboard", icon: "mdi-food"},
         { title: "Daftar Pengguna", to: "/user" },
         { title: "Buku", to:"/buku" },
         { title: "Denda", to:"/denda"},
@@ -75,7 +75,5 @@ export default {
   text-decoration: none;
   color: black;
 }
-.dashboard{
-  color:blue;
-}
+
 </style>

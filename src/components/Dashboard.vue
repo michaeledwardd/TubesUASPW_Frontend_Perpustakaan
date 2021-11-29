@@ -1,6 +1,50 @@
 <template>
-  <v-main>
-    <h1 class="text-h3 font-weight-medium mb-5 text-left">Dashboard</h1>
-    <p class="subtitle-1 text-left">Ini Dashboard</p>
-  </v-main>
+  <v-card
+    class="mx-auto"
+    max-width="344"
+  >
+    <v-img
+      src="https://literasinusantara.com/wp-content/uploads/2019/03/Mimpi-TBM-Kolong-2-720x720.jpg"
+      height="200px"
+    ></v-img>
+
+    <v-card-title>
+      Mengejar Mimpi di Tengah Pandemi
+    </v-card-title>
+
+    <v-card-subtitle>
+      Karya: Michael Edward
+    </v-card-subtitle>
+
+    <v-card-actions>
+      <v-spacer></v-spacer>
+
+      <v-btn
+        icon
+        @click="show = !show"
+      >
+        <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+      </v-btn>
+    </v-card-actions>
+
+    <v-expand-transition>
+      <div v-show="show">
+        <v-divider></v-divider>
+
+        <v-card-text>
+          Buku ini menceritakan perjuangan seorang mahasiswa yang berjuang untuk mempertahankan prestasinya di tengah situasi pandemi covid 19
+        </v-card-text>
+      </div>
+    </v-expand-transition>
+  </v-card>
 </template>
+
+
+
+<script>
+  export default {
+    data: () => ({
+      show: false,
+    }),
+  }
+</script>

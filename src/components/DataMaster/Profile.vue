@@ -4,49 +4,14 @@
 
     <v-card>
       <v-card-text>
-        <img
-        :src="imagePreview"
-        width="200"
-        v-show="showPreview"
-        />
-        <br />
-        <input
-          type="file"
-          name="picture"
-          class="form-control-file"
-          id="picture"
-          @change="onFileChange"
-        />
-        <br />
         <br />
         <v-text-field label="Nama" v-model="user.name" required></v-text-field>
-        <v-text-field
-          label="E-mail"
-          v-model="user.email"
-          required
-        ></v-text-field>
-        <v-checkbox
-          v-model="showPassField"
-          :label="`Change Password`"
-        ></v-checkbox>
-        <div v-if="showPassField == true">
-          <v-text-field
-            label="Old Password"
-            v-model="oldPass"
-            required
-          ></v-text-field>
-          <v-text-field
-            label="New Password"
-            v-model="newPass"
-            required
-          ></v-text-field>
-          <v-text-field
-            label="Confirm New Password"
-            v-model="confPass"
-            required
-          ></v-text-field>
-        </div>
+        <v-text-field label="E-mail" v-model="user.email" required></v-text-field>
+        <v-text-field label="Nomor Identitas" v-model="user.nomorIdentitas" required></v-text-field>
+        <v-text-field label="Username" v-model="user.username" required></v-text-field>
+        <v-text-field label="Password" v-model="user.password" required></v-text-field>
         <v-btn @click="update"> Save </v-btn>
+        <v-btn @click="hapusAkun"> Delete </v-btn>
       </v-card-text>
     </v-card>
 
@@ -76,12 +41,12 @@ export default {
       user: {
         email: "",
         name: "",
-        picture: "",
+        nomorIdentitas: "",
+        username: "",
+        password: "",
       },
-      oldPass: "",
-      newPass: "",
-      confPass: "",
       editId: localStorage.getItem("id"),
+      deleteId: localStorage.getItem("id"),
     };
   },
   methods: {
@@ -97,13 +62,9 @@ export default {
         .then((response) => {
           this.user.name = response.data.name;
           this.user.email = response.data.email;
-
-          if(response.data.picture!=null) {
-            this.showPreview =true;
-            console.log("read data",   response.data.picture);
-            this.imagePreview =  response.data.picture;
-          }
-
+          this.user.nomorIdentitas = response.data.nomorIdentitas;
+          this.user.username = response.data.username;
+          this.user.password = response.data.password;
         });
     },
 
