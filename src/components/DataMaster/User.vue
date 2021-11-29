@@ -164,6 +164,8 @@ export default {
       let newData = {
         name : this.form.name,
         email : this.form.email,
+        nomorIdentitas: this.form.nomorIdentitas,
+        username: this.form.username,
         password : this.form.password
       };
       var url = this.$api + '/user/' + this.editId;

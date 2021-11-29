@@ -23,6 +23,13 @@ const router = new VueRouter({
                 },
                 //buku
                 {
+                    path: '/user',
+                    name: 'User',
+                    meta: {title : 'Users'},
+                    component: importComponent('DataMaster/User'),
+                },
+                //buku
+                {
                     path: '/buku',
                     name: 'Buku',
                     meta: {title : 'Bukus'},
@@ -56,13 +63,7 @@ const router = new VueRouter({
                     meta: {title : 'Profiles'},
                     component: importComponent('DataMaster/Profile'),
                 },
-                //buku
-                {
-                    path: '/user',
-                    name: 'User',
-                    meta: {title : 'Profiles'},
-                    component: importComponent('DataMaster/User'),
-                },
+                
             ],
         },
 
