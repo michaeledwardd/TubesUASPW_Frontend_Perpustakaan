@@ -83,10 +83,10 @@ const router = new VueRouter({
         },
         //index
         {
-            path: '/landingpage',
-            name: 'LandingPage',
-            meta: { title: 'LandingPage' },
-            component: importComponent('LandingPage'),
+            path: '/home',
+            name: 'Home',
+            meta: { title: 'Home' },
+            component: importComponent('Home'),
         },
         {
             path: '*',
@@ -97,9 +97,9 @@ const router = new VueRouter({
 
 //Set Judul
 router.beforeEach((to, from, next) => {
-    if(to.name != "Login" && localStorage.getItem("token") == null && to.name!="Register"){
-        next('login')
-        document.to.meta.title = "Login"
+    if(to.name != "Login" && localStorage.getItem("token") == null && to.name!="Register" && to.name != "Home"){
+        next('home')
+        document.to.meta.title = "Home"
     }
     
     document.title = to.meta.title;

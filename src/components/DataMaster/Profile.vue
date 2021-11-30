@@ -4,16 +4,31 @@
 
     <v-card>
       <v-card-text>
-        <br />
-        <v-text-field label="Nama" v-model="user.name" required></v-text-field>
+        <v-text-field label="Nama" v-model="user.name" required>{{user.name}}</v-text-field>
         <v-text-field label="E-mail" v-model="user.email" required></v-text-field>
         <v-text-field label="Nomor Identitas" v-model="user.nomorIdentitas" required></v-text-field>
         <v-text-field label="Username" v-model="user.username" required></v-text-field>
-        <v-text-field label="Password" v-model="user.password" required></v-text-field>
+        <v-text-field type = "password" label="Password" v-model="user.password" required></v-text-field>
         <v-btn @click="update"> Save </v-btn>
-        <v-btn @click="hapusAkun"> Delete </v-btn>
+        <!-- <v-btn @click="hapusAkun(user.id)"> Delete </v-btn> -->
       </v-card-text>
     </v-card>
+
+    <v-dialog v-model="dialogConfirm" persistent max-width="400px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">warning!</span>
+        </v-card-title>
+        <v-card-text> Anda yakin ingin menghapus pengguna ini? </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="dialogConfirm = false">
+            Cancel
+          </v-btn>
+          <v-btn color="blue darken-1" text @click="deleteData"> Delete </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom>
       {{ error_message }}
@@ -34,13 +49,8 @@ export default {
       dialogConfirm: false,
       showPreview: false,
       formUser: new FormData(),
-      user: {
-        email: "",
-        name: "",
-        nomorIdentitas: "",
-        username: "",
-        password: "",
-      },
+      
+      user : [],
       editId: localStorage.getItem("id"),
       deleteId: localStorage.getItem("id"),
     };
@@ -48,161 +58,77 @@ export default {
   methods: {
     //read data product
     readData() {
-      this.url = this.$api + "/user";
-      this.$http
-        .get(this.url, {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
+      
+      this.$http.get(this.$api + '/user/'+localStorage.getItem('id'),{
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
           },
-        })
-        .then((response) => {
-          this.user.name = response.data.name;
-          this.user.email = response.data.email;
-          this.user.nomorIdentitas = response.data.nomorIdentitas;
-          this.user.username = response.data.username;
-          this.user.password = response.data.password;
-        });
+      }).then(response => {
+        this.user = response.data.data;
+      }).catch(error => {
+        console.log(error)
+      })  
     },
 
     update() {
-      if (this.showPassField == true) {
-        //jika ganti password
-        this.url = this.$api + "/user/hashCheck/" + this.editId;
-        let newData = {
-          password: this.oldPass,
-        };
-        this.$http
-          .put(this.url, newData, {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-          })
-          .then((response) => {
-            this.cekHash = true;
-            if (this.cekHash == false) {
-              console.log("Old Password salah");
-            } else if (this.newPass != this.confPass || this.newPass == "") {
-              this.error_message = response.data.message;
-              this.error_message =
-                "New Password dan Confirm New Password harus sama!";
-              this.color = "red";
-              this.snackbar = true;
-            } else {
-             
-              let formData = new FormData();
-              formData.append("picture", this.user.picture);
-              formData.append("email", this.user.email);
-              formData.append("password", this.newPass);
-              formData.append("name", this.user.name);
-
-              this.url = this.$api + "/user/updatePass/" + this.editId;
-              this.load = true;
-              this.$http
-                .post(this.url, formData, {
-                  headers: {
-                    Authorization: "Bearer " + localStorage.getItem("token"),
-                  },
-                })
-                .then((response) => {
-                  console.log(response);
-                  this.error_message = response.data.message;
-                  this.color = "green";
-                  this.snackbar = true;
-                  this.load = false;
-                  this.readData(); //mengambil data
-                  this.showPassField = false;
-                  this.oldPass = "",
-                  this.newPass = "",
-                  this.confPass = "";
-                })
-                .catch((error) => {
-                  this.error_message = error.response.data.message;
-                  this.color = "red";
-                  this.snackbar = true;
-                  this.load = false;
-                });
-            }
-          })
-          .catch((error) => {
-            this.error_message = error.response.data.message;
-            this.color = "red";
-            this.snackbar = true;
-            this.load = false;
-            this.cekHash = false;
-          });
-      } else {
-        //jika tidak ganti password
-    
-        let formData = new FormData();
-      
-        formData.append("email", this.user.email);
-        formData.append("name", this.user.name);
-        formData.append("picture", this.user.picture);
-
-        this.url = this.$api + "/user/" + this.editId;
-        this.load = true;
-        this.$http
-          .post(this.url, formData, {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-          })
-          .then((response) => {
-            this.error_message = response.data.message;
-            this.color = "green";
-            this.snackbar = true;
-            this.load = false;
-            this.readData(); //mengambil data
-          })
-          .catch((error) => {
-            this.error_message = error.response.data.message;
-            this.color = "red";
-            this.snackbar = true;
-            this.load = false;
-          });
-      }
-    },
-    onFileChange(event) {
-      /*
-    Set the local file variable to what the user has selected.
-    */
-      this.user.picture = event.target.files[0];
-      console.log(this.user.picture);
-
-      let reader = new FileReader();
-
-      /*
-    Add an event listener to the reader that when the file
-    has been loaded, we flag the show preview as true and set the
-    image to be what was read from the reader.
-    */
-      reader.addEventListener(
-        "load",
-        function () {
-          this.showPreview = true;
-          this.imagePreview = reader.result;
-        }.bind(this),
-        false
-      );
-
-      /*
-    Check to see if the file is not empty.
-    */
-      if (this.user.picture) {
-        /*
-            Ensure the file is an image file.
-        */
-        if (/\.(jpe?g|png|gif)$/i.test(this.user.picture.name)) {
-          console.log("loader", this.user.picture);
-          /*
-            Fire the readAsDataURL method which will read the file in and
-            upon completion fire a 'load' event which we will listen to and
-            display the image in the preview.
-            */
-          reader.readAsDataURL(this.user.picture);
+      let newData = {
+        name : this.user.name,
+        email : this.user.email,
+        nomorIdentitas: this.user.nomorIdentitas,
+        username: this.user.username,
+        password : this.user.password
+      };
+      var url = this.$api + '/user/' + this.editId;
+      this.load = true;
+      this.$http.put(url, newData, {
+        headers: {
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
         }
-      }
-
+      }).then(response => {
+        this.error_message = response.data.message;
+        this.color = 'green';
+        this.snackbar = true;
+        this.load = false;
+        this.close();
+        this.readData();
+        this.resetForm();
+        this.inputType = 'Tambah';
+      }).catch(error => {
+        this.error_message = error.response.data.message;
+        this.color = 'red';
+        this.snackbar = true;
+        this.load = false;
+      });          
+    },
+    hapusAkun(id){
+      this.deleteId = id;
+      this.dialogConfirm = true;
+    },
+    deleteData() {
+      //mengahapus data
+      var url = this.$api + '/user/' + this.deleteId;
+      //data dihapus berdasarkan id
+      this.$http.delete(url, {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token'),
+          },
+        })
+        .then((response) => {
+          this.error_message = response.data.message;
+          this.color = "green";
+          this.snackbar = true;
+          this.load = false;
+          this.close();
+          this.readData(); //mengambil data
+          this.resetForm();
+          this.inputType = "Tambah";
+        })
+        .catch((error) => {
+          this.error_message = error.response.data.message;
+          this.color = "red";
+          this.snackbar = true;
+          this.load = false;
+        });
     },
   },
   mounted() {
@@ -210,4 +136,3 @@ export default {
   },
 };
 </script> 
-
