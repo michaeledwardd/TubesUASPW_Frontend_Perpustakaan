@@ -3,8 +3,8 @@
     <v-container fluid fill-height class="posisinya">
       <v-layout flex align-center justify-center>
         <v-flex xs12 sm6 elevation-6>
-          <v-toolbar class="grey darken-3">
-            <v-toolbar-title class="grey--text">
+          <v-toolbar class="yellow darken-3">
+            <v-toolbar-title >
               <h1>Register form</h1>
             </v-toolbar-title>
           </v-toolbar>
@@ -52,14 +52,15 @@
                       class="mr-2"
                       @click="submit"
                       :class="{
-                        'grey darken-1 white--text': valid, disabled: !valid
+                        'green darken-1 white--text': valid, disabled: !valid
                       }"
                       >Go
                     </v-btn>
-                    <v-btn @click="clear" class="grey darken-3 white--text"
+                    <v-btn @click="clear" class="red darken-3 white--text"
                       >Clear
                     </v-btn>
-                    <v-btn @click="login" class="grey darken-3 white--text"
+                    <v-spacer></v-spacer>
+                    <v-btn @click="login" class="blue darken-3 white--text"
                       >Login
                     </v-btn>
                   </v-layout>
@@ -157,3 +158,9 @@ export default {
   },
 };
 </script> 
+
+<style scoped>
+.posisinya{
+  text-align: center;
+}
+</style>

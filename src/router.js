@@ -81,6 +81,13 @@ const router = new VueRouter({
             meta: { title: 'Login' },
             component: importComponent('Login'),
         },
+        //index
+        {
+            path: '/landingpage',
+            name: 'LandingPage',
+            meta: { title: 'LandingPage' },
+            component: importComponent('LandingPage'),
+        },
         {
             path: '*',
             redirect: '/'
@@ -93,8 +100,8 @@ router.beforeEach((to, from, next) => {
     if(to.name != "Login" && localStorage.getItem("token") == null && to.name!="Register"){
         next('login')
         document.to.meta.title = "Login"
-        
     }
+    
     document.title = to.meta.title;
     next();
 });

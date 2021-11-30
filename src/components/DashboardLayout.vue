@@ -25,11 +25,11 @@
 
     </v-navigation-drawer>
     <v-app-bar app fixed height="75px">
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon color = "green" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <VSpacer />
       <v-toolbar-items>
-        <v-btn text router @click = "btnProfile"><v-icon>mdi-account</v-icon></v-btn>
-        <v-btn text router @click = "btnLogout"><v-icon>mdi-power</v-icon></v-btn>
+        <v-btn text router color = "blue" @click = "btnProfile"><v-icon>mdi-account</v-icon></v-btn>
+        <v-btn text router color = "red" @click = "btnLogout"><v-icon>mdi-power</v-icon></v-btn>
       </v-toolbar-items>
     </v-app-bar>
     <div class="fullheigh pa-5">
