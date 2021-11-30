@@ -9,7 +9,7 @@
         <v-text-field label="Nomor Identitas" v-model="user.nomorIdentitas" required></v-text-field>
         <v-text-field label="Username" v-model="user.username" required></v-text-field>
         <v-text-field type = "password" label="Password" v-model="user.password" required></v-text-field>
-        <v-btn @click="update"> Save </v-btn>
+        <v-btn color = "green" @click="update"> Save </v-btn>
         <!-- <v-btn @click="hapusAkun(user.id)"> Delete </v-btn> -->
       </v-card-text>
     </v-card>

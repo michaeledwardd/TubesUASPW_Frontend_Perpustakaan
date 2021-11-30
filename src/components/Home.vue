@@ -1,4 +1,7 @@
 <template>
+<v-form>
+  
+  
   <v-carousel>
     <v-carousel-item
       v-for="(item,i) in items"
@@ -8,6 +11,12 @@
       transition="fade-transition"
     ></v-carousel-item>
   </v-carousel>
+  <v-spacer> </v-spacer>
+  <v-btn @click="login" color="blue" class="badge rounded-pill btn btn-sm btn-warning me-2">Login</v-btn>
+  <v-btn @click="register" color="yellow" class="badge rounded-pill btn btn-sm btn-warning me-2">register</v-btn>
+</v-form>
+  
+  
 </template>
 
 <script>
@@ -30,5 +39,19 @@
         ],
       }
     },
+    methods: {
+    register(){
+      this.$router.push({
+          name: "Register",
+      });
+    },
+    login(){
+      this.$router.push({
+          name: "Login",
+      });
+    }
   }
+  }
+
+  
 </script>
