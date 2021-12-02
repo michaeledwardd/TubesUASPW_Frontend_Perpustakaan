@@ -1,10 +1,19 @@
 <template>
   <main>
     <v-container fluid fill-height class="posisinya">
+      <v-layout >
+        <v-flex align-self-center d-none d-md-block>
+        <img src="../assets/welcome.svg" alt="ilustrasi" width="500px">
+        <!-- <SomeIcon/> -->
+        </v-flex>
+      </v-layout>
       <v-layout flex align-center justify-center>
         <v-flex xs12 sm6 elevation-6>
+        <v-flex>
+          <div style="text-align: center"><img src="../assets/logo.png" alt="logo" width="80px"></div>
+        </v-flex>
           <v-toolbar class="yellow darken-3">
-            <v-toolbar-title >
+            <v-toolbar-title>
               <h1>Login form</h1>
             </v-toolbar-title>
           </v-toolbar>
@@ -34,7 +43,8 @@
                       class="mr-2"
                       @click="submit"
                       :class="{
-                        'green darken-1 white--text': valid, disabled: !valid
+                        'green darken-1 white--text': valid,
+                        disabled: !valid,
                       }"
                       >Go
                     </v-btn>
@@ -45,7 +55,6 @@
                     <v-btn @click="register" class="blue darken-3 white--text"
                       >Register
                     </v-btn>
-                    
                   </v-layout>
                 </v-form>
               </div>
@@ -54,7 +63,9 @@
           <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom>
             {{ error_message }}
           </v-snackbar>
-          <v-snackbar v-model="success" color="green" timeout="2000" bottom> Berhasil Verifikasi Email </v-snackbar>
+          <v-snackbar v-model="success" color="green" timeout="2000" bottom>
+            Berhasil Verifikasi Email
+          </v-snackbar>
         </v-flex>
       </v-layout>
     </v-container>
@@ -77,14 +88,17 @@
  <script>
 export default {
   name: "Login",
+  components: {
+    // SomeIcon,
+  },
   data() {
     return {
       load: false,
       snackbar: false,
-      error_message: '',
-      color: '',
+      error_message: "",
+      color: "",
       valid: false,
-      password: '',
+      password: "",
       passwordRules: [(v) => !!v || "Password tidak boleh kosong :("],
       email: "",
       emailRules: [(v) => !!v || "E-mail tidak boleh kosong :("],
@@ -96,13 +110,13 @@ export default {
         //cek validasi data yang dikirim
         this.load = true;
         this.$http
-          .post(this.$api + '/login', {
+          .post(this.$api + "/login", {
             email: this.email,
             password: this.password,
           })
           .then((response) => {
-            localStorage.setItem('id', response.data.user.id); //menyimpan id user yang sedang login
-            localStorage.setItem('token', response.data.access_token);
+            localStorage.setItem("id", response.data.user.id); //menyimpan id user yang sedang login
+            localStorage.setItem("token", response.data.access_token);
             //menyimpan auth token
             this.error_message = response.data.message;
             this.color = "green";
@@ -117,30 +131,28 @@ export default {
             this.error_message = error.response.data.message;
             this.color = "red";
             this.snackbar = true;
-            localStorage.removeItem('token');
+            localStorage.removeItem("token");
             this.load = false;
-          })
+          });
       }
     },
-    register(){
+    register() {
       this.$router.push({
-          name: "Register",
+        name: "Register",
       });
     },
-    showVerified(){
-      if(this.$route.query.verified == 'success'){
+    showVerified() {
+      if (this.$route.query.verified == "success") {
         this.success = true;
-        this.$router.push(
-          '/login'
-        );
+        this.$router.push("/login");
       }
     },
     clear() {
       this.$refs.form.reset(); //Clear form login
     },
   },
-  mounted(){
+  mounted() {
     this.showVerified();
-  }
+  },
 };
 </script> 
