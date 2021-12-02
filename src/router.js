@@ -63,7 +63,20 @@ const router = new VueRouter({
                     meta: {title : 'Profiles'},
                     component: importComponent('DataMaster/Profile'),
                 },
-                
+                //buku
+                {
+                    path: '/bukuuser',
+                    name: 'BukuUser',
+                    meta: {title : 'List Buku'},
+                    component: importComponent('User/BukuUser'),
+                },
+                //buku
+                {
+                    path: '/dendauser',
+                    name: 'DendaUser',
+                    meta: {title : 'Denda Pemustaka'},
+                    component: importComponent('User/DendaUser'),
+                },
             ],
         },
 

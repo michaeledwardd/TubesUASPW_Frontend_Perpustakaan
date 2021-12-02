@@ -1,6 +1,7 @@
 <template>
   <div class="dashboard">
     <v-navigation-drawer v-model="drawer" class="fullheight" width="256" app>
+
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="title"> PerpustakaanKita </v-list-item-title>
@@ -9,19 +10,42 @@
       </v-list-item>
       
       <v-divider></v-divider>
-      <v-list dense nav>
-        <v-list-item
+      <v-list dense nav v-if="loggedIn && loggedinAdmin" >
+        <v-list-item 
           v-for="item in items"
           :key="item.title"
           link
           tag="router-link"
           :to="item.to"
         >
+              <v-list-item-icon >
+                  <v-icon v-text="item.icon" class="icon"></v-icon>
+                </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
+               
+            <v-list-item-title class="text-left">{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
+
+      <v-list dense nav v-if="loggedIn && !loggedinAdmin" >
+        <v-list-item 
+          v-for="item in user"
+          :key="item.title"
+          link
+          tag="router-link"
+          :to="item.to"
+        >
+        <v-list-item-icon >
+                <v-icon v-text="item.icon" class="icon"></v-icon>
+              </v-list-item-icon>
+          <v-list-item-content>
+              
+            <v-list-item-title class="text-left">{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+
 
     </v-navigation-drawer>
     <v-app-bar app fixed height="75px">
@@ -46,13 +70,20 @@ export default {
     return {
       drawer: true,
       items: [
-        { title: "Dashboard", to: "/dashboard", icon: "mdi-food"},
-        { title: "Daftar Pengguna", to: "/user" },
+        { title: "Dashboard", to: "/dashboard", icon:"mdi-home"},
+        { title: "Daftar Pengguna", to: "/user", icon:"mdi-account" },
         { title: "Buku", to:"/buku" },
         { title: "Denda", to:"/denda"},
         { title: "Peminjaman", to:"/peminjaman"},
         { title: "Pengembalian", to:"/pengembalian"},
       ],
+      user: [
+        { title: "Dashboard", to: "/dashboard", icon:"mdi-home"},
+        { title: "List Buku", to:"/bukuuser", icon:"mdi-book-open"},
+        { title: "Denda Pemustaka", to:"/dendauser"},
+        { title: "Peminjaman", to:"/peminjaman"},
+        { title: "Pengembalian", to:"/pengembalian"},
+      ]
     };
   },
   methods: {
@@ -64,6 +95,14 @@ export default {
       localStorage.removeItem('token');
       location.reload();
     },
+  },
+  computed: {
+    loggedIn(){
+      return localStorage.getItem("token") != null;
+    },
+    loggedinAdmin(){
+      return localStorage.getItem("id") == "4";
+    }
   }
 };
 </script>
